@@ -3,7 +3,15 @@ uuid = "b3bac678-08c2-4efc-a2d3-d8e0205ea86d"
 authors = ["Carlos Vigil-Vásquez <carlos.vigil.v@gmail.com> and contributors"]
 version = "1.0.0-DEV"
 
+[deps]
+Gumbo = "708ec375-b3d6-5a57-a7ce-8257bf98657a"
+MetaGraphsNext = "fa8bd995-216d-47f1-8a91-f3b68fbeb377"
+SBML = "e5567a89-2604-4b09-9718-f5f78e97c3bb"
+
 [compat]
+Gumbo = "0.8.2"
+MetaGraphsNext = "0.7.1"
+SBML = "1.5.1"
 julia = "1.10"
 
 [extras]
