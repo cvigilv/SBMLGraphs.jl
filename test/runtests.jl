@@ -3,8 +3,8 @@ using SBML
 using Graphs
 using Test
 
-@testset "converter" verbose = true begin
-    @testset "sbml_to_simplegraph" begin
+@testset "Extension - Graphs.jl" verbose = true begin
+    @testset "convert" begin
         # Hand construct expected graph
         V = ["S1", "S2", "S3", "S4", "S5", "S6", "r1", "r2", "r3"]
         E = [
@@ -23,7 +23,7 @@ using Test
         dG_exp = DiGraph()
         add_vertices!(dG_exp, length(V))
         for e in E
-            s,t = e
+            s, t = e
             add_edge!(dG_exp, idx(s, V), idx(t, V))
         end
         G_exp = Graph(dG_exp)

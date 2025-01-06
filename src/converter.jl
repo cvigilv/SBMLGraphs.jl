@@ -1,11 +1,7 @@
-# import Base.Iterators: product
-
-# General {{{
 """
-    Base.convert(t::Type{Dict}, s::SBML.Reaction)
+	Base.convert(t::Type{Dict}, s::SBML.Reaction)
 
 Convert an SBML.Reaction object to a Dictionary.
-
 
 # Arguments
 - `t::Type{Dict}`: The target type for conversion (Dictionary).
@@ -32,104 +28,51 @@ function Base.convert(t::Type{Dict}, s::SBML.Reaction)
         "cv_terms" => s.cv_terms,
     )
 end
-# }}}
-# Graph.jl {{{
+
 """
-    sbml_to_simplegraph(m::SBML.Model, G::T, directed::Bool) where T
-
-Convert an SBML model to a SimpleGraph or SimpleDiGraph.
-
-This function takes an SBML model and converts it to a bipartite graph representation,
-where nodes represent both reactions and species, and edges represent the connections
-between them.
+    Base.convert(_::Type{AbstractMatrix}, m::SBML.Model)
 
 # Arguments
-- `m::SBML.Model`: The SBML model to convert.
-- `G::T`: The graph object to populate (either SimpleGraph or SimpleDiGraph).
-- `directed::Bool`: Whether to create a directed graph or not.
+- `t::Type{AbstractMatrix}`: The target type for conversion (AbstractMatrix).
+- `s::SBML.Model`: The SBML.Reaction object to be converted.
 
 # Returns
-A tuple containing:
-- The populated graph `G` of type `T`.
-- An `AbstractVector{String}` containing the vertex labels (reaction and species names).
-
-# Note
-If `directed` is true and a reaction is reversible, edges are added in both directions.
+- `M::AbstractMatrix{Bool}`: Adjacency matrix for the directed bipartite reaction-species graph contructed from the model.
+- `V::AbstractVector{String}`: Node identifiers.
 """
-function sbml_to_simplegraph(m::SBML.Model, G::T, directed::Bool)::Tuple{T,AbstractVector{String}} where T
-	# Helper functions
-	ref2idx(ref, lookup) = findfirst(==(ref.species), lookup)
-
-    # Initialize structures to return
-    V = []
-    E = []
+function Base.convert(_::Type{AbstractMatrix{T}}, m::SBML.Model)::Tuple{AbstractMatrix{T}, AbstractVector{String}} where {T}
+    # Helper functions
+    ref2idx(ref, lookup) = findfirst(==(ref.species), lookup)
 
     # Get vertices and add them to the graph
+    V = []
     V_reactions = keys(m.reactions) |> collect
     V_species = keys(m.species) |> collect
-	V = sort([V_reactions; V_species])
+    V = sort([V_reactions; V_species])
 
-    Graphs.add_vertices!(G, length(V))
-
-    # Traverse reactions and create bipartite graph
+    # Traverse reactions and create adjacency matrix
+    M = zeros(T, length(V), length(V))
     for (rxn_id, rxn_ref) in m.reactions
         rxn_idx = findfirst(==(rxn_id), V)
 
-		# Convert species name to node index
-		reactants_idx = map(e -> ref2idx(e, V), rxn_ref.reactants)
-		products_idx = map(e -> ref2idx(e, V), rxn_ref.products)
+        # Convert species name to node index
+        reactants_idx = map(e -> ref2idx(e, V), rxn_ref.reactants)
+        products_idx = map(e -> ref2idx(e, V), rxn_ref.products)
 
-		# Construct reaction edges from reactants and products
+        # Construct reaction edges from reactants and products
         E_reactants = Base.product(reactants_idx, [rxn_idx]) |> collect |> vec
         E_products = Base.product([rxn_idx], products_idx) |> collect |> vec
 
-		if directed && rxn_ref.reversible
-			E_reactants = [E_reactants; map(reverse, E_reactants)]
-			E_products = [E_products; map(reverse, E_products)]
-		end
+        if rxn_ref.reversible
+            E_reactants = [E_reactants; map(reverse, E_reactants)]
+            E_products = [E_products; map(reverse, E_products)]
+        end
 
-		E = [E_products; E_reactants]
-
-		for e in E
-			Graphs.add_edge!(G, e)
-		end
+        for e in [E_products; E_reactants]
+            s, t = e
+            M[s, t] = T(1)
+        end
     end
 
-    return G, V
+    return M, V
 end
-
-"""
-    Base.convert(t::Type{Graphs.Graph}, m::SBML.Model)::Tuple{Graphs.Graph,AbstractVector{String}}
-
-Convert an SBML model instance to a Graph instance and the nodes identifiers.
-
-# Arguments
-- `t::Type{Graphs.Graph}`: The type of Graph to convert to.
-- `m::SBML.Model`: The SBML model to be converted.
-
-# Returns
-- `Graphs.Graph`: SBML model undirected graph instance.
-- `AbstractVector{String}`: Node identifiers.
-"""
-function Base.convert(_::Type{Graphs.Graph}, m::SBML.Model)::Tuple{Graphs.Graph,AbstractVector{String}}
-	return sbml_to_simplegraph(m, Graphs.Graph(), false)
-end
-
-
-"""
-    Base.convert(t::Type{Graphs.DiGraph}, m::SBML.Model)::Tuple{Graphs.DiGraph,AbstractVector{String}}
-
-Convert an SBML model instance to a DiGraph instance and the nodes identifiers.
-
-# Arguments
-- `t::Type{Graphs.DiGraph}`: The type of Graph to convert to.
-- `m::SBML.Model`: The SBML model to be converted.
-
-# Returns
-- `Graphs.DiGraph`: SBML model directed graph instance.
-- `AbstractVector{String}`: Node identifiers.
-"""
-function Base.convert(_::Type{Graphs.DiGraph}, m::SBML.Model)::Tuple{Graphs.DiGraph,AbstractVector{String}}
-	return sbml_to_simplegraph(m, Graphs.DiGraph(), true)
-end
-# }}}

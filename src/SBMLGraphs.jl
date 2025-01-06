@@ -1,11 +1,20 @@
+# SPDX-License-Identifier: MIT
+
+"""
+# SBMLGraphs.jl
+
+Package for converting Systems Biology Markup Language (SBML) XML files into common graph
+representations.
+
+## Extensions
+
+- SparseArrays.jl
+- Graphs.jl
+"""
 module SBMLGraphs
 
-import SBML
-import Graphs
-import MetaGraphsNext
+using SBML
 
 include("converter.jl")
-
-export sbml_to_graph
 
 end
