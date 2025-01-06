@@ -1,5 +1,5 @@
 """
-	Base.convert(t::Type{Dict}, s::SBML.Reaction)
+    Base.convert(t::Type{Dict}, s::SBML.Reaction)
 
 Convert an SBML.Reaction object to a Dictionary.
 
@@ -10,7 +10,7 @@ Convert an SBML.Reaction object to a Dictionary.
 # Returns
 - `Dict`: A Dictionary containing the fields of the SBML.Reaction object as key-value pairs.
 """
-function Base.convert(t::Type{Dict}, reaction::SBML.Reaction)
+function Base.convert(t::Type{Dict}, reaction::SBML.Reaction)::Dict
     return t(
         "name" => reaction.name,
         "reactants" => reaction.reactants,
@@ -30,7 +30,7 @@ function Base.convert(t::Type{Dict}, reaction::SBML.Reaction)
 end
 
 """
-	Base.convert(t::Type{Dict}, species::SBML.Species)
+    Base.convert(t::Type{Dict}, species::SBML.Species)
 
 Convert an SBML.Species object to a Dictionary.
 
@@ -41,7 +41,7 @@ Convert an SBML.Species object to a Dictionary.
 # Returns
 - `Dict`: A Dictionary containing the fields of the SBML.Reaction object as key-value pairs.
 """
-function Base.convert(t::Type{Dict}, species::SBML.Species)
+function Base.convert(t::Type{Dict}, species::SBML.Species)::Dict
     return t(
         "name" => species.name,
         "compartment" => species.compartment,

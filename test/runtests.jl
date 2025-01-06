@@ -77,34 +77,34 @@ idx(target, arr) = findfirst(==(target), arr)
         model_str = """<?xml version="1.0" encoding="UTF-8"?>
                 <sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
                   <model id="graph_model">
-                	<listOfCompartments>
-                	  <compartment id="C_c" name="cytosol" size="1" constant="true"/>
-                	</listOfCompartments>
-                	<listOfSpecies>
-        			  <species id="S1" name="Specie 1" compartment="C_c" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false" fbc:chemicalFormula="C1">
-        				<notes>
-        					<p>Notes S1</p>
-        				</notes>
-        			  </species>
-        			  <species id="S2" name="Specie 2" compartment="C_c" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false" fbc:chemicalFormula="C2">
-        				<notes>
-        					<p>Notes S2</p>
-        				</notes>
-        			  </species>
-                	</listOfSpecies>
-                	<listOfReactions>
-                	  <reaction id="r1" reversible="false">
-                		<listOfReactants>
-                		  <speciesReference species="S1" stoichiometry="2" constant="true"/>
-                		</listOfReactants>
-                		<listOfProducts>
-                		  <speciesReference species="S2" stoichiometry="1" constant="false"/>
-                		</listOfProducts>
-        				<notes>
-        				  <p>Notes S1-S2</p>
-        				</notes>
-                	  </reaction>
-                	</listOfReactions>
+                    <listOfCompartments>
+                      <compartment id="C_c" name="cytosol" size="1" constant="true"/>
+                    </listOfCompartments>
+                    <listOfSpecies>
+                      <species id="S1" name="Specie 1" compartment="C_c" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false" fbc:chemicalFormula="C1">
+                        <notes>
+                            <p>Notes S1</p>
+                        </notes>
+                      </species>
+                      <species id="S2" name="Specie 2" compartment="C_c" hasOnlySubstanceUnits="true" boundaryCondition="false" constant="false" fbc:chemicalFormula="C2">
+                        <notes>
+                            <p>Notes S2</p>
+                        </notes>
+                      </species>
+                    </listOfSpecies>
+                    <listOfReactions>
+                      <reaction id="r1" reversible="false">
+                        <listOfReactants>
+                          <speciesReference species="S1" stoichiometry="2" constant="true"/>
+                        </listOfReactants>
+                        <listOfProducts>
+                          <speciesReference species="S2" stoichiometry="1" constant="false"/>
+                        </listOfProducts>
+                        <notes>
+                          <p>Notes S1-S2</p>
+                        </notes>
+                      </reaction>
+                    </listOfReactions>
                   </model>
                 </sbml>"""
         model = readSBMLFromString(model_str; report_severities = false)
@@ -125,7 +125,7 @@ idx(target, arr) = findfirst(==(target), arr)
                 "notes" => "<notes>\n  <p>Notes S1-S2</p>\n</notes>",
                 "annotation" => nothing,
                 "sbo" => nothing,
-				"cv_terms" => SBML.CVTerm[],
+                "cv_terms" => SBML.CVTerm[],
             )
 
             # Observed
@@ -156,45 +156,45 @@ idx(target, arr) = findfirst(==(target), arr)
         model_str = """<?xml version="1.0" encoding="UTF-8"?>
         <sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
           <model id="graph_model">
-        	<listOfCompartments>
-        	  <compartment id="C_c" name="cytosol" size="1" constant="true"/>
-        	</listOfCompartments>
-        	<listOfSpecies>
-        	  <species id="S1" compartment="C_c"/>
-        	  <species id="S2" compartment="C_c"/>
-        	  <species id="S3" compartment="C_c"/>
-        	  <species id="S4" compartment="C_c"/>
-        	  <species id="S5" compartment="C_c"/>
-        	  <species id="S6" compartment="C_c"/>
-        	</listOfSpecies>
-        	<listOfReactions>
-        	  <reaction id="r1" reversible="false">
-        		<listOfReactants>
-        		  <speciesReference species="S1" stoichiometry="2" constant="true"/>
-        		</listOfReactants>
-        		<listOfProducts>
-        		  <speciesReference species="S2" stoichiometry="1" constant="true"/>
-        		</listOfProducts>
-        	  </reaction>
-        	  <reaction id="r2" reversible="false">
-        		<listOfReactants>
-        		  <speciesReference species="S2" stoichiometry="1" constant="true"/>
-        		</listOfReactants>
-        		<listOfProducts>
-        		  <speciesReference species="S3" stoichiometry="1" constant="true"/>
-        		</listOfProducts>
-        	  </reaction>
-        	  <reaction id="r3" reversible="false">
-        		<listOfReactants>
-        		  <speciesReference species="S3" stoichiometry="1" constant="true"/>
-        		  <speciesReference species="S4" stoichiometry="1" constant="true"/>
-        		</listOfReactants>
-        		<listOfProducts>
-        		  <speciesReference species="S5" stoichiometry="1" constant="true"/>
-        		  <speciesReference species="S6" stoichiometry="1" constant="true"/>
-        		</listOfProducts>
-        	  </reaction>
-        	</listOfReactions>
+            <listOfCompartments>
+              <compartment id="C_c" name="cytosol" size="1" constant="true"/>
+            </listOfCompartments>
+            <listOfSpecies>
+              <species id="S1" compartment="C_c"/>
+              <species id="S2" compartment="C_c"/>
+              <species id="S3" compartment="C_c"/>
+              <species id="S4" compartment="C_c"/>
+              <species id="S5" compartment="C_c"/>
+              <species id="S6" compartment="C_c"/>
+            </listOfSpecies>
+            <listOfReactions>
+              <reaction id="r1" reversible="false">
+                <listOfReactants>
+                  <speciesReference species="S1" stoichiometry="2" constant="true"/>
+                </listOfReactants>
+                <listOfProducts>
+                  <speciesReference species="S2" stoichiometry="1" constant="true"/>
+                </listOfProducts>
+              </reaction>
+              <reaction id="r2" reversible="false">
+                <listOfReactants>
+                  <speciesReference species="S2" stoichiometry="1" constant="true"/>
+                </listOfReactants>
+                <listOfProducts>
+                  <speciesReference species="S3" stoichiometry="1" constant="true"/>
+                </listOfProducts>
+              </reaction>
+              <reaction id="r3" reversible="false">
+                <listOfReactants>
+                  <speciesReference species="S3" stoichiometry="1" constant="true"/>
+                  <speciesReference species="S4" stoichiometry="1" constant="true"/>
+                </listOfReactants>
+                <listOfProducts>
+                  <speciesReference species="S5" stoichiometry="1" constant="true"/>
+                  <speciesReference species="S6" stoichiometry="1" constant="true"/>
+                </listOfProducts>
+              </reaction>
+            </listOfReactions>
           </model>
         </sbml>"""
         model = readSBMLFromString(model_str; report_severities = false)
