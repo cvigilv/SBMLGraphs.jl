@@ -10,22 +10,24 @@ Convert an SBML.Reaction object to a Dictionary.
 # Returns
 - `Dict`: A Dictionary containing the fields of the SBML.Reaction object as key-value pairs.
 """
-function Base.convert(t::Type{Dict}, s::SBML.Reaction)
+function Base.convert(t::Type{Dict}, reaction::SBML.Reaction)
     return t(
-        "name" => s.name,
-        "reactants" => s.reactants,
-        "products" => s.products,
-        "kinetic_parameters" => s.kinetic_parameters,
-        "lower_bound" => s.lower_bound,
-        "upper_bound" => s.upper_bound,
-        "gene_product_association" => s.gene_product_association,
-        "kinetic_math" => s.kinetic_math,
-        "reversible" => s.reversible,
-        "metaid" => s.metaid,
-        "notes" => s.notes,
-        "annotation" => s.annotation,
-        "sbo" => s.sbo,
-        "cv_terms" => s.cv_terms,
+        "name" => reaction.name,
+        "reactants" => reaction.reactants,
+        "products" => reaction.products,
+        "kinetic_parameters" => reaction.kinetic_parameters,
+        "lower_bound" => reaction.lower_bound,
+        "upper_bound" => reaction.upper_bound,
+        "gene_product_association" => reaction.gene_product_association,
+        "kinetic_math" => reaction.kinetic_math,
+        "reversible" => reaction.reversible,
+        "metaid" => reaction.metaid,
+        "notes" => reaction.notes,
+        "annotation" => reaction.annotation,
+        "sbo" => reaction.sbo,
+        "cv_terms" => reaction.cv_terms,
+    )
+end
     )
 end
 
