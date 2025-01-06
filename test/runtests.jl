@@ -1,6 +1,6 @@
 using SBMLGraphs
 using SBML
-using Graphs
+using Graphs, SparseArrays # Extensions
 using Test
 
 # Helper functions
@@ -82,6 +82,20 @@ idx(target, arr) = findfirst(==(target), arr)
         @test all(V_dG_obs .== V)
     end
 
+    @testset "SBML.Model -> SparseArrays.SparseMatrixCSC" begin
+        # Directed graph adjacency matrix
+        dG_exp = spzeros(length(V), length(V))
+        for e in E
+            s, t = e
+            dG_exp[idx(s, V), idx(t, V)] = 1
+        end
+
+        dG_obs, V_dG_obs = convert(SparseArrays.SparseMatrixCSC, model)
+
+        # Compare adjacency matrices
+        @test all(dG_exp .== dG_obs)
+        @test all(V_dG_obs .== V)
+
     end
 
     @testset "SBML.Model -> Graphs.AbstractGraph" begin
@@ -105,6 +119,7 @@ idx(target, arr) = findfirst(==(target), arr)
         @test all(adjacency_matrix(dG_exp) .== adjacency_matrix(dG_obs))
 		@test all(V_G_obs .== V)
 		@test all(V_dG_obs .== V)
-
     end
+
+
 end
