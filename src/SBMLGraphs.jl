@@ -15,6 +15,6 @@ module SBMLGraphs
 
 using SBML
 
-include("converter.jl")
+include("convert.jl")
 
 end
