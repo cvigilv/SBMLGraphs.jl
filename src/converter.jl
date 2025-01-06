@@ -28,6 +28,37 @@ function Base.convert(t::Type{Dict}, reaction::SBML.Reaction)
         "cv_terms" => reaction.cv_terms,
     )
 end
+
+"""
+	Base.convert(t::Type{Dict}, species::SBML.Species)
+
+Convert an SBML.Species object to a Dictionary.
+
+# Arguments
+- `t::Type{Dict}`: The target type for conversion (Dictionary).
+- `reaction::SBML.Species`: The SBML.Reaction object to be converted.
+
+# Returns
+- `Dict`: A Dictionary containing the fields of the SBML.Reaction object as key-value pairs.
+"""
+function Base.convert(t::Type{Dict}, species::SBML.Species)
+    return t(
+        "name" => species.name,
+        "compartment" => species.compartment,
+        "boundary_condition" => species.boundary_condition,
+        "formula" => species.formula,
+        "charge" => species.charge,
+        "initial_amount" => species.initial_amount,
+        "initial_concentration" => species.initial_concentration,
+        "substance_units" => species.substance_units,
+        "conversion_factor" => species.conversion_factor,
+        "only_substance_units" => species.only_substance_units,
+        "constant" => species.constant,
+        "metaid" => species.metaid,
+        "notes" => species.notes,
+        "annotation" => species.annotation,
+        "sbo" => species.sbo,
+        "cv_terms" => species.cv_terms,
     )
 end
 
