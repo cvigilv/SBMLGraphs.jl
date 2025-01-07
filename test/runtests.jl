@@ -340,6 +340,85 @@ end
             @test all(SBMLGraphs.projected_graph(M, findall(x -> occursin("r", x), V)) .== A_rxn_exp)
             @test all(SBMLGraphs.projected_graph(M, findall(x -> occursin("S", x), V)) .== A_met_exp)
         end
+
+        @testset "SparseArrays.SparseMatrixCSC" verbose = true begin
+            #if
+            M, V = convert(SparseArrays.SparseMatrixCSC, model)
+            A_rxn_exp = SparseArrays.sparse(Bool.([
+                0 1 1 0 0;
+                0 0 0 0 1;
+                0 0 0 1 0;
+                0 0 0 0 1;
+                0 0 0 0 0;
+                ]))
+            A_met_exp = SparseArrays.sparse(Bool.([
+                0 1 0 0 0 0;
+                1 0 1 1 0 0;
+                0 0 0 0 1 1;
+                0 0 0 0 1 0;
+                0 0 0 1 0 0;
+                0 0 0 0 0 0;
+                ]))
+
+            # it should
+            A_rxn_obs = SBMLGraphs.projected_graph(M, findall(x -> occursin("r", x), V))
+            A_met_obs = SBMLGraphs.projected_graph(M, findall(x -> occursin("S", x), V))
+
+            @test typeof(A_rxn_obs) .== typeof(A_rxn_exp)
+            @test typeof(A_met_obs) .== typeof(A_met_exp)
+            @test all(A_rxn_obs .== A_rxn_exp)
+            @test all(A_met_obs .== A_met_exp)
+        end
+
+        @testset "Graphs.AbstractGraph" verbose = true begin
+            # if
+            dG, V = convert(Graphs.DiGraph, model)
+            G = Graphs.Graph(dG)
+
+            dG_rxn_exp = [
+                0 1 1 0 0;
+                0 0 0 0 1;
+                0 0 0 1 0;
+                0 0 0 0 1;
+                0 0 0 0 0;
+            ]
+            dG_met_exp = [
+                0 1 0 0 0 0;
+                1 0 1 1 0 0;
+                0 0 0 0 1 1;
+                0 0 0 0 1 0;
+                0 0 0 1 0 0;
+                0 0 0 0 0 0;
+            ]
+            G_rxn_exp = [
+                0 1 1 0 0;
+                1 0 1 0 1;
+                1 1 0 1 0;
+                0 0 1 0 1;
+                0 1 0 1 0;
+            ]
+            G_met_exp = [
+                0 1 0 0 0 0;
+                1 0 1 1 0 0;
+                0 1 0 0 1 1;
+                0 1 0 0 1 0;
+                0 0 1 1 0 1;
+                0 0 1 0 1 0;
+            ]
+
+            # then
+            dG_rxn_obs = SBMLGraphs.projected_graph(dG, findall(x -> occursin("r", x), V))
+            dG_met_obs = SBMLGraphs.projected_graph(dG, findall(x -> occursin("S", x), V))
+            G_rxn_obs = SBMLGraphs.projected_graph(G, findall(x -> occursin("r", x), V))
+            G_met_obs = SBMLGraphs.projected_graph(G, findall(x -> occursin("S", x), V))
+
+            # should
+            @test all(Graphs.adjacency_matrix(dG_rxn_obs) .== dG_rxn_exp)
+            @test all(Graphs.adjacency_matrix(dG_met_obs) .== dG_met_exp)
+            @test all(Graphs.adjacency_matrix(G_rxn_obs) .== G_rxn_exp)
+            @test all(Graphs.adjacency_matrix(G_met_obs) .== G_met_exp)
+        end
+
     end
 
     @testset "get_reactions_graph" verbose = true begin

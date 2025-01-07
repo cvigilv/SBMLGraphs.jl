@@ -1,6 +1,6 @@
 module GraphsExt
 
-import SBML, Graphs
+import SBMLGraphs, SBML, Graphs
 
 """
     sbml_to_simplegraph(m::SBML.Model, G::Graphs.AbstractGraph, directed::Bool)
@@ -99,6 +99,47 @@ Convert an SBML model instance to a DiGraph instance and the nodes identifiers.
 """
 function Base.convert(_::Type{Graphs.DiGraph}, m::SBML.Model)::Tuple{Graphs.DiGraph, AbstractVector{String}}
     return sbml_to_simplegraph(m, Graphs.DiGraph(), true)
+end
+
+"""
+    SBMLGraphs.projected_graph(A::Graphs.AbstractGraph, Vp::AbstractVector{Int}) where T
+
+Returns the projection of `G` onto one of its node set.
+
+# Arguments
+- `G::Graphs.AbstractGraph`: Bipartite graph.
+- `Vp::AbstractVector{Int}`: List of nodes to project onto.
+
+# Returns
+- `Graphs.AbstractGraph`: A graph that is the projection onto the given nodes.
+"""
+function SBMLGraphs.projected_graph(G::Graphs.AbstractGraph, Vp::AbstractVector{Int})
+    # Create projected graph
+    if Graphs.is_directed(G)
+		Gp = Graphs.DiGraph()
+    else
+		Gp = Graphs.Graph()
+    end
+
+	Graphs.add_vertices!(Gp, length(Vp))
+
+    # Create a mapping from original vertex IDs to new vertex IDs
+    idx_mapper = enumerate(Vp) |> p -> reverse.(p) |> Dict
+
+    # Iterate over each node finding neighbors and adding edges
+    for u in Vp
+        nbrs = setdiff(
+            Set(v for nbr in Graphs.neighbors(G, u) for v in Graphs.neighbors(G, nbr)),
+            Set([u])
+        )
+
+        for v in nbrs
+            @assert v ∈ Vp "Graph is not bipartite"
+			Graphs.add_edge!(Gp, idx_mapper[u], idx_mapper[v])
+        end
+    end
+
+    return Gp
 end
 
 end
