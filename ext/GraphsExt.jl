@@ -142,4 +142,44 @@ function SBMLGraphs.projected_graph(G::Graphs.AbstractGraph, Vp::AbstractVector{
     return Gp
 end
 
+
+"""
+    SBMLGraphs.get_reactions_graph(model::SBML.Model, G::Graphs.AbstractGraph, V::AbstractVector{String})
+
+Contructs the reactions-centered graph based on SBML model, graph and node identifiers.
+
+# Arguments
+- `m::SBML.Model`: The SBML model to convert.
+- `A::AbstractGraph`: Graph.
+- `Vp::AbstractVector{Int}`: List of nodes identifiers.
+
+# Returns
+- `AbstractGraph`: Projected graph over reaction nodes.
+- `AbstractVector{String}`: Reaction nodes identifiers.
+"""
+function SBMLGraphs.get_reactions_graph(model::SBML.Model, G::Graphs.AbstractGraph, V::AbstractVector{String})
+    Vp = [Int(i) for (i, v) in enumerate(V) if v ∈ keys(model.reactions)]
+    return SBMLGraphs.projected_graph(G, Vp), V[Vp]
+end
+
+
+"""
+    SBMLGraphs.get_species_graph(model::SBML.Model, G::Graphs.AbstractGraph, V::AbstractVector{String})
+
+Contructs the species-centered graph based on SBML model, graph and node identifiers.
+
+# Arguments
+- `m::SBML.Model`: The SBML model to convert.
+- `A::AbstractGraph`: Graph.
+- `Vp::AbstractVector{Int}`: List of nodes identifiers.
+
+# Returns
+- `AbstractGraph`: Projected graph over species nodes.
+- `AbstractVector{String}`: Species nodes identifiers.
+"""
+function SBMLGraphs.get_species_graph(model::SBML.Model, G::Graphs.AbstractGraph, V::AbstractVector{String})
+    Vp = [Int(i) for (i, v) in enumerate(V) if v ∈ keys(model.species)]
+    return SBMLGraphs.projected_graph(G, Vp), V[Vp]
+end
+
 end

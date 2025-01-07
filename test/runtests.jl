@@ -380,8 +380,8 @@ end
 
         @testset "Graphs.AbstractGraph" verbose = true begin
             # if
-            dG, V = convert(Graphs.DiGraph, model)
-            G = Graphs.Graph(dG)
+            dG, dV = convert(Graphs.DiGraph, model)
+            G, V = convert(Graphs.Graph, model)
 
             dG_rxn_exp = [
                 0 1 1 0 0;
@@ -415,8 +415,8 @@ end
             ]
 
             # then
-            dG_rxn_obs = SBMLGraphs.projected_graph(dG, findall(x -> occursin("r", x), V))
-            dG_met_obs = SBMLGraphs.projected_graph(dG, findall(x -> occursin("S", x), V))
+            dG_rxn_obs = SBMLGraphs.projected_graph(dG, findall(x -> occursin("r", x), dV))
+            dG_met_obs = SBMLGraphs.projected_graph(dG, findall(x -> occursin("S", x), dV))
             G_rxn_obs = SBMLGraphs.projected_graph(G, findall(x -> occursin("r", x), V))
             G_met_obs = SBMLGraphs.projected_graph(G, findall(x -> occursin("S", x), V))
 
@@ -446,6 +446,36 @@ end
             @test all(A_rxn_obs .== A_rxn_exp)
             @test all(V_rxn_obs .== V_rxn_exp)
         end
+
+        @testset "Graphs.AbstractGraph" verbose = true begin
+            dG, dV = convert(Graphs.DiGraph, model)
+            G, V = convert(Graphs.Graph, model)
+
+            dA_rxn_exp = [
+                0 1 1 0 0;
+                0 0 0 0 1;
+                0 0 0 1 0;
+                0 0 0 0 1;
+                0 0 0 0 0;
+            ]
+            A_rxn_exp = [
+                0 1 1 0 0;
+                1 0 1 0 1;
+                1 1 0 1 0;
+                0 0 1 0 1;
+                0 1 0 1 0;
+            ]
+            V_rxn_exp = V[findall(x -> occursin("r", x), V)]
+
+            #
+            dG_rxn_obs, dV_rxn_obs = SBMLGraphs.get_reactions_graph(model, dG, V)
+            G_rxn_obs, V_rxn_obs = SBMLGraphs.get_reactions_graph(model, G, V)
+
+            @test all(Graphs.adjacency_matrix(dG_rxn_obs) .== dA_rxn_exp)
+            @test all(dV_rxn_obs .== V_rxn_exp)
+            @test all(Graphs.adjacency_matrix(G_rxn_obs) .== A_rxn_exp)
+            @test all(V_rxn_obs .== V_rxn_exp)
+        end
     end
 
     @testset "get_species_graph" verbose = true begin
@@ -466,7 +496,36 @@ end
             @test all(A_met_obs .== A_met_exp)
             @test all(V_met_obs .== V_met_exp)
         end
+
+        @testset "Graphs.AbstractGraph" verbose = true begin
+            dG, dV = convert(Graphs.DiGraph, model)
+            G, V = convert(Graphs.Graph, model)
+
+            dA_met_exp = [
+                0 1 0 0 0 0;
+                1 0 1 1 0 0;
+                0 0 0 0 1 1;
+                0 0 0 0 1 0;
+                0 0 0 1 0 0;
+                0 0 0 0 0 0;
+            ]
+            A_met_exp = [
+                0 1 0 0 0 0;
+                1 0 1 1 0 0;
+                0 1 0 0 1 1;
+                0 1 0 0 1 0;
+                0 0 1 1 0 1;
+                0 0 1 0 1 0;
+            ]
+            V_met_exp = V[findall(x -> occursin("S", x), V)]
+
+            dG_met_obs, dV_met_obs = SBMLGraphs.get_species_graph(model, dG, V)
+            G_met_obs, V_met_obs = SBMLGraphs.get_species_graph(model, G, V)
+
+            @test all(Graphs.adjacency_matrix(dG_met_obs) .== dA_met_exp)
+            @test all(dV_met_obs .== V_met_exp)
+            @test all(Graphs.adjacency_matrix(G_met_obs) .== A_met_exp)
+            @test all(V_met_obs .== V_met_exp)
+        end
     end
-
-
 end
