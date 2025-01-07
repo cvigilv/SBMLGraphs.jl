@@ -1,0 +1,11 @@
+[deps]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+Glob = "c27321d9-0574-5035-807b-f59d2c89b15c"
+GraphMakie = "1ecd5474-83a3-4783-bb4f-06765db800d2"
+Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
+Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+SBML = "e5567a89-2604-4b09-9718-f5f78e97c3bb"
+SBMLGraphs = "b3bac678-08c2-4efc-a2d3-d8e0205ea86d"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
