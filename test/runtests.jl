@@ -255,7 +255,7 @@ idx(target, arr) = findfirst(==(target), arr)
 end
 
 
-@testset "projection" verbose=true begin
+@testset "projection" verbose = true begin
     model_str = """<?xml version="1.0" encoding="UTF-8"?>
     <sbml xmlns="http://www.sbml.org/sbml/level3/version2/core" level="3" version="2">
       <model id="graph_model">
@@ -319,7 +319,7 @@ end
 
     @testset "projected_graph" verbose = true begin
         @testset "Base.AbstractMatrix" verbose = true begin
-            M,V = convert(AbstractMatrix{Bool}, model)
+            M, V = convert(AbstractMatrix{Bool}, model)
 
             A_rxn_exp = [
                 0 1 1 0 0;
@@ -344,21 +344,29 @@ end
         @testset "SparseArrays.SparseMatrixCSC" verbose = true begin
             #if
             M, V = convert(SparseArrays.SparseMatrixCSC, model)
-            A_rxn_exp = SparseArrays.sparse(Bool.([
-                0 1 1 0 0;
-                0 0 0 0 1;
-                0 0 0 1 0;
-                0 0 0 0 1;
-                0 0 0 0 0;
-                ]))
-            A_met_exp = SparseArrays.sparse(Bool.([
-                0 1 0 0 0 0;
-                1 0 1 1 0 0;
-                0 0 0 0 1 1;
-                0 0 0 0 1 0;
-                0 0 0 1 0 0;
-                0 0 0 0 0 0;
-                ]))
+            A_rxn_exp = SparseArrays.sparse(
+                Bool.(
+                    [
+                        0 1 1 0 0;
+                        0 0 0 0 1;
+                        0 0 0 1 0;
+                        0 0 0 0 1;
+                        0 0 0 0 0;
+                    ]
+                )
+            )
+            A_met_exp = SparseArrays.sparse(
+                Bool.(
+                    [
+                        0 1 0 0 0 0;
+                        1 0 1 1 0 0;
+                        0 0 0 0 1 1;
+                        0 0 0 0 1 0;
+                        0 0 0 1 0 0;
+                        0 0 0 0 0 0;
+                    ]
+                )
+            )
 
             # it should
             A_rxn_obs = SBMLGraphs.projected_graph(M, findall(x -> occursin("r", x), V))
@@ -423,7 +431,7 @@ end
 
     @testset "get_reactions_graph" verbose = true begin
         @testset "Base.AbstractMatrix" verbose = true begin
-            M,V = convert(AbstractMatrix{Bool}, model)
+            M, V = convert(AbstractMatrix{Bool}, model)
 
             A_rxn_exp = [
                 0 1 1 0 0;
@@ -442,7 +450,7 @@ end
 
     @testset "get_species_graph" verbose = true begin
         @testset "Base.AbstractMatrix" verbose = true begin
-            M,V = convert(AbstractMatrix{Bool}, model)
+            M, V = convert(AbstractMatrix{Bool}, model)
 
             A_met_exp = [
                 0 1 0 0 0 0;

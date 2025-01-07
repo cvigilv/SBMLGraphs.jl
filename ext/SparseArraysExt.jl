@@ -33,9 +33,9 @@ Returns the projection of `A` onto one of its node sets in CSC format.
 # Returns
 - `SparseArrays.SparseMatrixCSC{T}`: A graph adjacency matrix that is the projection onto the given nodes.
 """
-function SBMLGraphs.projected_graph(A::SparseArrays.SparseMatrixCSC{Tv,Ti}, Vp::AbstractVector{Int}) where {Tv,Ti}
+function SBMLGraphs.projected_graph(A::SparseArrays.SparseMatrixCSC{Tv, Ti}, Vp::AbstractVector{Int}) where {Tv, Ti}
     # Helper function
-    neighbors(M, idx) = findall(!=(0), M[idx,:])
+    neighbors(M, idx) = findall(!=(0), M[idx, :])
 
     # Create empty Vp × Vp adjacency matrix
     Ap = spzeros(Tv, length(Vp), length(Vp))

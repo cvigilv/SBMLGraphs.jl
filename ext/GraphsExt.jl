@@ -116,12 +116,12 @@ Returns the projection of `G` onto one of its node set.
 function SBMLGraphs.projected_graph(G::Graphs.AbstractGraph, Vp::AbstractVector{Int})
     # Create projected graph
     if Graphs.is_directed(G)
-		Gp = Graphs.DiGraph()
+        Gp = Graphs.DiGraph()
     else
-		Gp = Graphs.Graph()
+        Gp = Graphs.Graph()
     end
 
-	Graphs.add_vertices!(Gp, length(Vp))
+    Graphs.add_vertices!(Gp, length(Vp))
 
     # Create a mapping from original vertex IDs to new vertex IDs
     idx_mapper = enumerate(Vp) |> p -> reverse.(p) |> Dict
@@ -135,7 +135,7 @@ function SBMLGraphs.projected_graph(G::Graphs.AbstractGraph, Vp::AbstractVector{
 
         for v in nbrs
             @assert v ∈ Vp "Graph is not bipartite"
-			Graphs.add_edge!(Gp, idx_mapper[u], idx_mapper[v])
+            Graphs.add_edge!(Gp, idx_mapper[u], idx_mapper[v])
         end
     end
 

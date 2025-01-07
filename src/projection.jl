@@ -26,9 +26,9 @@ computation time.
 
 - [`projected_graph` function from `networkx`](https://networkx.org/documentation/stable/_modules/networkx/algorithms/bipartite/projection.html#projected_graph)
 """
-function projected_graph(A::AbstractMatrix{T}, Vp::AbstractVector{Int}) where T
+function projected_graph(A::AbstractMatrix{T}, Vp::AbstractVector{Int}) where {T}
     # Helper function
-    neighbors(M, idx) = findall(!=(0), M[idx,:])
+    neighbors(M, idx) = findall(!=(0), M[idx, :])
 
     # Create empty Vp × Vp adjacency matrix
     Ap = zeros(T, length(Vp), length(Vp))
