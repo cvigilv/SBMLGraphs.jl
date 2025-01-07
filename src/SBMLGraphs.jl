@@ -16,5 +16,6 @@ module SBMLGraphs
 using SBML
 
 include("convert.jl")
+include("projection.jl")
 
 end
