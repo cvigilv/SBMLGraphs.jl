@@ -4,7 +4,6 @@ authors = ["Carlos Vigil-Vásquez <carlos.vigil.v@gmail.com> and contributors"]
 version = "1.0.0-DEV"
 
 [deps]
-Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 SBML = "e5567a89-2604-4b09-9718-f5f78e97c3bb"
 
 [weakdeps]
