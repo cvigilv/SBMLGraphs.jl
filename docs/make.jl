@@ -52,13 +52,8 @@ makedocs(;
     ],
 
     doctest = false,
+    checkdocs = :none,
     warnonly = true,
 )
 
-deploydocs(;
-    repo = "github.com/cvigilv/SBMLGraphs.jl.git",
-    branch = "gh-pages",
-    devbranch = "develop",
-    devurl = "develop",
-    # deps = Pkg.add(ALL_DEPENDENCIES),
-)
+deploydocs(; repo = "github.com/cvigilv/SBMLGraphs.jl.git", devbranch = "main")
