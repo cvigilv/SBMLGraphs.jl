@@ -18,4 +18,6 @@ using SBML
 include("convert.jl")
 include("projection.jl")
 
+export get_species_graph, get_reactions_graph, projected_graph
+
 end
