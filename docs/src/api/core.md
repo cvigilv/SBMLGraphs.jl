@@ -1,9 +1,4 @@
-```@meta
-CurrentModule = SBMLGraphs
-```
-
 # API
-
 
 ```@docs
 SBMLGraphs.SBMLGraphs
@@ -24,10 +19,3 @@ SBMLGraphs.projected_graph(::AbstractMatrix{T}, ::AbstractVector{Int64}) where T
 SBMLGraphs.get_species_graph(::SBML.Model, ::AbstractMatrix, ::AbstractVector{String})
 SBMLGraphs.get_reactions_graph(::SBML.Model, ::AbstractMatrix, ::AbstractVector{String})
 ```
-
-
-# Package extensions
-
-## Graphs.jl
-
-## SparseArrays.jl
