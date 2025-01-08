@@ -3,7 +3,7 @@ module GraphsExt
 import SBMLGraphs, SBML, Graphs
 
 """
-    sbml_to_simplegraph(m::SBML.Model, G::Graphs.AbstractGraph, directed::Bool)
+    _sbml_to_simplegraph(m::SBML.Model, G::Graphs.AbstractGraph, directed::Bool)
 
 Convert an SBML model to a SimpleGraph or SimpleDiGraph.
 
@@ -24,7 +24,7 @@ A tuple containing:
 # Note
 If `directed` is true and a reaction is reversible, edges are added in both directions.
 """
-function sbml_to_simplegraph(m::SBML.Model, G::Graphs.AbstractGraph, directed::Bool)
+function _sbml_to_simplegraph(m::SBML.Model, G::Graphs.AbstractGraph, directed::Bool)
     # Helper functions
     ref2idx(ref, lookup) = findfirst(==(ref.species), lookup)
 
@@ -80,7 +80,7 @@ Convert an SBML model instance to a Graph instance and the nodes identifiers.
 - `AbstractVector{String}`: Node identifiers.
 """
 function Base.convert(_::Type{Graphs.Graph}, m::SBML.Model)::Tuple{Graphs.Graph, AbstractVector{String}}
-    return sbml_to_simplegraph(m, Graphs.Graph(), false)
+    return _sbml_to_simplegraph(m, Graphs.Graph(), false)
 end
 
 
@@ -98,7 +98,7 @@ Convert an SBML model instance to a DiGraph instance and the nodes identifiers.
 - `AbstractVector{String}`: Node identifiers.
 """
 function Base.convert(_::Type{Graphs.DiGraph}, m::SBML.Model)::Tuple{Graphs.DiGraph, AbstractVector{String}}
-    return sbml_to_simplegraph(m, Graphs.DiGraph(), true)
+    return _sbml_to_simplegraph(m, Graphs.DiGraph(), true)
 end
 
 """

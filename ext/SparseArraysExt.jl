@@ -38,7 +38,7 @@ function SBMLGraphs.projected_graph(A::SparseArrays.SparseMatrixCSC{Tv, Ti}, Vp:
     neighbors(M, idx) = findall(!=(0), M[idx, :])
 
     # Create empty Vp × Vp adjacency matrix
-    Ap = spzeros(Tv, length(Vp), length(Vp))
+    Ap = SparseArrays.spzeros(Tv, length(Vp), length(Vp))
 
     # Create a mapping from original vertex IDs to new vertex IDs
     idx_mapper = enumerate(Vp) |> p -> reverse.(p) |> Dict
