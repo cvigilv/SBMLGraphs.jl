@@ -22,7 +22,7 @@ function Base.convert(_::Type{SparseArrays.SparseMatrixCSC}, m::SBML.Model)::Tup
 end
 
 """
-    projected_graph(A::SparseArrays.SparseMatrixCSC{T}, Vp::AbstractVector{Int}) where T
+    _projected_graph(A::SparseArrays.SparseMatrixCSC{T}, Vp::AbstractVector{Int}) where T
 
 Returns the projection of `A` onto one of its node sets in CSC format.
 
@@ -33,7 +33,7 @@ Returns the projection of `A` onto one of its node sets in CSC format.
 # Returns
 - `SparseArrays.SparseMatrixCSC{T}`: A graph adjacency matrix that is the projection onto the given nodes.
 """
-function SBMLGraphs.projected_graph(A::SparseArrays.SparseMatrixCSC{Tv, Ti}, Vp::AbstractVector{Int}) where {Tv, Ti}
+function SBMLGraphs._projected_graph(A::SparseArrays.SparseMatrixCSC{Tv, Ti}, Vp::AbstractVector{Int}) where {Tv, Ti}
     # Helper function
     neighbors(M, idx) = findall(!=(0), M[idx, :])
 

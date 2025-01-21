@@ -102,7 +102,7 @@ function Base.convert(_::Type{Graphs.DiGraph}, m::SBML.Model)::Tuple{Graphs.DiGr
 end
 
 """
-    SBMLGraphs.projected_graph(A::Graphs.AbstractGraph, Vp::AbstractVector{Int}) where T
+    SBMLGraphs._projected_graph(A::Graphs.AbstractGraph, Vp::AbstractVector{Int}) where T
 
 Returns the projection of `G` onto one of its node set.
 
@@ -113,7 +113,7 @@ Returns the projection of `G` onto one of its node set.
 # Returns
 - `Graphs.AbstractGraph`: A graph that is the projection onto the given nodes.
 """
-function SBMLGraphs.projected_graph(G::Graphs.AbstractGraph, Vp::AbstractVector{Int})
+function SBMLGraphs._projected_graph(G::Graphs.AbstractGraph, Vp::AbstractVector{Int})
     # Create projected graph
     if Graphs.is_directed(G)
         Gp = Graphs.DiGraph()
@@ -158,8 +158,8 @@ Contructs the reactions-centered graph based on SBML model, graph and node ident
 - `AbstractVector{String}`: Reaction nodes identifiers.
 """
 function SBMLGraphs.get_reactions_graph(model::SBML.Model, G::Graphs.AbstractGraph, V::AbstractVector{String})
-    Vp = [Int(i) for (i, v) in enumerate(V) if v ∈ keys(model.reactions)]
-    return SBMLGraphs.projected_graph(G, Vp), V[Vp]
+    Vp = [i for (i, v) in enumerate(V) if v in keys(model.reactions)]
+    return SBMLGraphs._projected_graph(G, Vp), V[Vp]
 end
 
 
@@ -178,8 +178,8 @@ Contructs the species-centered graph based on SBML model, graph and node identif
 - `AbstractVector{String}`: Species nodes identifiers.
 """
 function SBMLGraphs.get_species_graph(model::SBML.Model, G::Graphs.AbstractGraph, V::AbstractVector{String})
-    Vp = [Int(i) for (i, v) in enumerate(V) if v ∈ keys(model.species)]
-    return SBMLGraphs.projected_graph(G, Vp), V[Vp]
+    Vp = [i for (i, v) in enumerate(V) if v in keys(model.species)]
+    return SBMLGraphs._projected_graph(G, Vp), V[Vp]
 end
 
 end

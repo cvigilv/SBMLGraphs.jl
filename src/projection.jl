@@ -26,7 +26,7 @@ computation time.
 
 - [`projected_graph` function from `networkx`](https://networkx.org/documentation/stable/_modules/networkx/algorithms/bipartite/projection.html#projected_graph)
 """
-function projected_graph(A::AbstractMatrix{T}, Vp::AbstractVector{Int}) where {T}
+function _projected_graph(A::AbstractMatrix{T}, Vp::AbstractVector{Int}) where {T}
     # Helper function
     neighbors(M, idx) = findall(!=(0), M[idx, :])
 
@@ -67,8 +67,8 @@ Contructs the reaction-centered graph based on SBML model, adjacency matrix and 
 - `AbstractVector{String}`: Reaction nodes identifiers.
 """
 function get_reactions_graph(model::SBML.Model, A::AbstractMatrix, V::AbstractVector{String})
-    Vp = [Int(i) for (i, v) in enumerate(V) if v ∈ keys(model.reactions)]
-    return projected_graph(A, Vp), V[Vp]
+    Vp = [i for (i, v) in enumerate(V) if v in keys(model.reactions)]
+    return _projected_graph(A, Vp), V[Vp]
 end
 
 
@@ -87,6 +87,6 @@ Contructs the species-centered graph based on SBML model, adjacency matrix and n
 - `AbstractVector{String}`: Species nodes identifiers.
 """
 function get_species_graph(model::SBML.Model, A::AbstractMatrix, V::AbstractVector{String})
-    Vp = [Int(i) for (i, v) in enumerate(V) if v ∈ keys(model.species)]
-    return projected_graph(A, Vp), V[Vp]
+    Vp = [i for (i, v) in enumerate(V) if v in keys(model.species)]
+    return _projected_graph(A, Vp), V[Vp]
 end

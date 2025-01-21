@@ -65,7 +65,7 @@ using Test
     </sbml>"""
     model = readSBMLFromString(model_str; report_severities = false)
 
-    @testset "projected_graph" verbose = true begin
+    @testset "_projected_graph" verbose = true begin
         @testset "Base.AbstractMatrix" verbose = true begin
             M, V = convert(AbstractMatrix{Bool}, model)
 
@@ -85,8 +85,8 @@ using Test
                 0 0 0 0 0 0;
             ]
 
-            @test all(SBMLGraphs.projected_graph(M, findall(x -> occursin("r", x), V)) .== A_rxn_exp)
-            @test all(SBMLGraphs.projected_graph(M, findall(x -> occursin("S", x), V)) .== A_met_exp)
+            @test all(SBMLGraphs._projected_graph(M, findall(x -> occursin("r", x), V)) .== A_rxn_exp)
+            @test all(SBMLGraphs._projected_graph(M, findall(x -> occursin("S", x), V)) .== A_met_exp)
         end
 
         @testset "SparseArrays.SparseMatrixCSC" verbose = true begin
@@ -117,8 +117,8 @@ using Test
             )
 
             # it should
-            A_rxn_obs = SBMLGraphs.projected_graph(M, findall(x -> occursin("r", x), V))
-            A_met_obs = SBMLGraphs.projected_graph(M, findall(x -> occursin("S", x), V))
+            A_rxn_obs = SBMLGraphs._projected_graph(M, findall(x -> occursin("r", x), V))
+            A_met_obs = SBMLGraphs._projected_graph(M, findall(x -> occursin("S", x), V))
 
             @test typeof(A_rxn_obs) .== typeof(A_rxn_exp)
             @test typeof(A_met_obs) .== typeof(A_met_exp)
@@ -163,10 +163,10 @@ using Test
             ]
 
             # then
-            dG_rxn_obs = SBMLGraphs.projected_graph(dG, findall(x -> occursin("r", x), dV))
-            dG_met_obs = SBMLGraphs.projected_graph(dG, findall(x -> occursin("S", x), dV))
-            G_rxn_obs = SBMLGraphs.projected_graph(G, findall(x -> occursin("r", x), V))
-            G_met_obs = SBMLGraphs.projected_graph(G, findall(x -> occursin("S", x), V))
+            dG_rxn_obs = SBMLGraphs._projected_graph(dG, findall(x -> occursin("r", x), dV))
+            dG_met_obs = SBMLGraphs._projected_graph(dG, findall(x -> occursin("S", x), dV))
+            G_rxn_obs = SBMLGraphs._projected_graph(G, findall(x -> occursin("r", x), V))
+            G_met_obs = SBMLGraphs._projected_graph(G, findall(x -> occursin("S", x), V))
 
             # should
             @test all(Graphs.adjacency_matrix(dG_rxn_obs) .== dG_rxn_exp)
